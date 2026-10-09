@@ -24,7 +24,6 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
         <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
           <LoginForm initialError={initialError} />
         </div>
-        <p className="mt-4 text-center text-xs text-muted">Acesso exclusivo para e-mails @eduardometinger.com</p>
       </div>
     </main>
   );

@@ -17,7 +17,7 @@ export default function EsqueciSenhaPage() {
         <form action={action} className="space-y-4 rounded-2xl border border-border bg-surface p-6 shadow-sm">
           <div>
             <label htmlFor="email" className="label">E-mail</label>
-            <input id="email" name="email" type="email" required autoComplete="email" placeholder="nome@eduardometinger.com" className="input" />
+            <input id="email" name="email" type="email" required autoComplete="email" className="input" />
           </div>
           {state.error && <p className="rounded-lg bg-danger/10 px-3 py-2 text-sm text-danger">{state.error}</p>}
           {state.message && <p className="rounded-lg bg-accent/10 px-3 py-2 text-sm text-accent">{state.message}</p>}

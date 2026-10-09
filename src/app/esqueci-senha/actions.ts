@@ -1,15 +1,19 @@
 "use server";
 
 import { cookies, headers } from "next/headers";
-import { ALLOWED_DOMAIN, AUTH_NEXT_COOKIE, isAllowedEmail } from "@/lib/auth";
+import { AUTH_NEXT_COOKIE, isAllowedEmail } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
 export type ResetState = { error?: string; message?: string };
 
+// Mesma resposta exista ou não a conta (e seja qual for o e-mail), para não dar pistas.
+const RESET_SENT =
+  "Se houver uma conta com esse e-mail, enviamos um link para criar uma nova senha. Abra o link neste mesmo navegador.";
+
 export async function requestPasswordReset(_prev: ResetState, formData: FormData): Promise<ResetState> {
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   if (!isAllowedEmail(email)) {
-    return { error: `Use seu e-mail @${ALLOWED_DOMAIN}.` };
+    return { message: RESET_SENT };
   }
 
   const origin = (await headers()).get("origin") ?? "";
@@ -29,8 +33,5 @@ export async function requestPasswordReset(_prev: ResetState, formData: FormData
     return { error: "Muitas tentativas. Aguarde alguns minutos e tente de novo." };
   }
 
-  // Mesma resposta exista ou não a conta, para não revelar quem tem cadastro.
-  return {
-    message: "Se houver uma conta com esse e-mail, enviamos um link para criar uma nova senha. Abra o link neste mesmo navegador.",
-  };
+  return { message: RESET_SENT };
 }

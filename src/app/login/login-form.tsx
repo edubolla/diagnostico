@@ -25,7 +25,6 @@ export function LoginForm({ initialError }: { initialError?: string }) {
           type="email"
           required
           autoComplete="email"
-          placeholder="nome@eduardometinger.com"
           className="input"
         />
       </div>
