@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useState } from "react";
 import { login, signup, type AuthState } from "./actions";
 
@@ -47,6 +48,14 @@ export function LoginForm({ initialError }: { initialError?: string }) {
       <button type="submit" disabled={pending} className="btn w-full">
         {pending ? "Aguarde…" : isLogin ? "Entrar" : "Criar conta"}
       </button>
+
+      {isLogin && (
+        <p className="text-center text-sm">
+          <Link href="/esqueci-senha" className="font-semibold text-brand underline-offset-2 hover:underline">
+            Esqueci minha senha
+          </Link>
+        </p>
+      )}
 
       <p className="text-center text-sm text-muted">
         {isLogin ? "Primeiro acesso?" : "Já tem conta?"}{" "}

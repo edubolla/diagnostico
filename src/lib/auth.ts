@@ -4,6 +4,9 @@ import { createClient } from "@/lib/supabase/server";
 
 export const ALLOWED_DOMAIN = "eduardometinger.com";
 
+// Para onde o link do e-mail deve levar depois do login (ex.: redefinir senha).
+export const AUTH_NEXT_COOKIE = "auth_next";
+
 export function isAllowedEmail(email: string | null | undefined) {
   return !!email && email.trim().toLowerCase().split("@")[1] === ALLOWED_DOMAIN;
 }

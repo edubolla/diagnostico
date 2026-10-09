@@ -1,8 +1,12 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
+import { AUTH_NEXT_COOKIE } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
-// Destino do link de confirmação de e-mail enviado pelo Supabase.
+const ALLOWED_NEXT = ["/clientes", "/redefinir-senha"];
+
+// Destino dos links enviados por e-mail pelo Supabase (confirmação de conta e recuperação de senha).
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl;
   const code = searchParams.get("code");
@@ -19,8 +23,15 @@ export async function GET(request: NextRequest) {
     error = true;
   }
 
+  const cookieStore = await cookies();
+  const savedNext = cookieStore.get(AUTH_NEXT_COOKIE)?.value;
+  cookieStore.delete(AUTH_NEXT_COOKIE);
+
   if (error) {
     return NextResponse.redirect(`${origin}/login?erro=confirmacao`);
   }
-  return NextResponse.redirect(`${origin}/clientes`);
+
+  const next =
+    type === "recovery" ? "/redefinir-senha" : ALLOWED_NEXT.includes(savedNext ?? "") ? savedNext! : "/clientes";
+  return NextResponse.redirect(`${origin}${next}`);
 }
